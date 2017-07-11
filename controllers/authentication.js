@@ -4,6 +4,10 @@ exports.signup = (req, res, next) => {
   // res.send({ success: 'true' });
   // console.log('x')
   let { email, password } = req.body;
+  if (!email || !password ) {
+    return res.status(422).send({ error: 'You must provide email and password'});
+  }
+
   User.findOne({ email: email }, (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser) {
@@ -18,7 +22,7 @@ exports.signup = (req, res, next) => {
     //save it, and add call back if want to know when it's been saved
     user.save( (err) => {
       if (err) { return next(err); }
-      res.json(user);
+      res.json( { success: 'true' } );
     });
 
   });
