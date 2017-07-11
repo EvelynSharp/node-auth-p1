@@ -8,6 +8,10 @@ const morgan = require('morgan');
 //create app as an instance of express
 const app = express();
 const router = require('./router');
+const mongoose = require('mongoose');
+
+//DB SETUP
+mongoose.connect('mongodb://localhost/node-auth-p1')
 
 //APP SETUP
 //app.use register morgan and bodyparser as middlewares
