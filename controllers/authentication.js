@@ -1,4 +1,14 @@
+const jwt = require('jwt-simple');
 const User = require('../models/user');
+const config = require('../config');
+
+tokenForUser = (user) => {
+  const timestamp = new Date().getTime();
+  //jwt - has sub (subject) points to who this token belongs to
+  //jwt - iat - issued at time
+  return jwt.encode( { sub: user.id, iat: timestamp }, config.secret );
+}
+
 
 exports.signup = (req, res, next) => {
   // res.send({ success: 'true' });
@@ -22,7 +32,7 @@ exports.signup = (req, res, next) => {
     //save it, and add call back if want to know when it's been saved
     user.save( (err) => {
       if (err) { return next(err); }
-      res.json( { success: 'true' } );
+      res.json( { token: tokenForUser(user) } );
     });
 
   });

@@ -13,16 +13,19 @@ const userSchema = new Schema ({
 });
 
 //on save hook, encrypt password
-
-userSchema.pre('save', (next) => {
-  const user = this;
-
-  bcrypt.genSalt(10, (err, salt) {
+//'.pre' = before 'save', run this call back function
+userSchema.pre('save', function(next) {
+  // if use ES6 =>, this will refer to global scope
+  const user = this; //this refers to the user model
+  bcrypt.genSalt(10, (err, salt) => {
+    console.log(user.password);
     if(err) { return next(err); }
+    // hash (encrypt) pw using salt
     bcrypt.hash(user.password, salt, null, (err, hash) => {
       if(err) { return next(err); }
+      //overwrite pw text with hashed pw
       user.password = hash;
-      next();
+      next(); // go ahead and save
     });
   });
 });
