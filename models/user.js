@@ -30,6 +30,14 @@ userSchema.pre('save', function(next) {
   });
 });
 
+//any user obj created will have access to all func defined with .method
+userSchema.methods.comparePassword = function( candidatePassword, callback)  {
+  //bcrypt will do the encrypt and compare behind the scene
+  bcrypt.compare( candidatePassword, this.password, (err, isMatch) => {
+    if(err) { return callback(err); }
+    callback(null, isMatch); // ismatch will be true/false 
+  } )
+}
 
 //create the model class
 //'user' points to connection, tell mongoose that and to use userSchema
