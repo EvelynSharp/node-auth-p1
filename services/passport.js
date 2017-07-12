@@ -6,6 +6,21 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 //in passport, a strategy is a method for authenticating user
 //req -> hit passport, check login use strategy -> if login send to route handler
 
+//use local strategy to sign in with pw and email,
+//if signed in, route handle and give them a new jwt token
+const LocalStrategy = require('passport-local');
+
+// localstrats will default look for pw in BODY under pw, and username in username
+//rest username to email below
+const localOptions = { usernameField: 'email' };
+//Create local strategy
+const localLogin = new LocalStrategy( localOptions, (email, password, done) => {
+  //verify username and pw,
+  // if correct, call done with user obj, else call done with false
+  // similar to jwtLogin
+})
+
+
 //setup options for jwt strategy
 //tell the new jwt strats below where to find the token - look in req header
 //also tell secret
