@@ -24,7 +24,13 @@ const localLogin = new LocalStrategy( localOptions, (email, password, done) => {
 
     //is pw == user.password? need to decoded "salted" pw
     // encrypt the provided pw with salt to match to hash - never decrypt hash
-    
+    user.comparePassword(password, (err, isMatch) => {
+      if(err) { return done(err); }
+      if(!isMatch) { return done(null, false); }
+      return done(null, user);
+      //passport assign this user to req.user, so we can use in authentication.js - signin
+      
+    })
 
   })
 })
@@ -58,3 +64,4 @@ const jwtLogin = new JwtStrategy( jwtOptions, (payload, done) => {
 //tell passport to use this strategy
 
 passport.use(jwtLogin);
+passport.use(localLogin);

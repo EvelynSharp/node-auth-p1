@@ -9,6 +9,12 @@ tokenForUser = (user) => {
   return jwt.encode( { sub: user.id, iat: timestamp }, config.secret );
 }
 
+exports.signin = (req, res, next) => {
+  //user already has username/pw authed - middleware in router.js
+  //just need to provide token
+  res.send({ token: tokenForUser(req.user) });
+}
+
 
 exports.signup = (req, res, next) => {
   // res.send({ success: 'true' });
